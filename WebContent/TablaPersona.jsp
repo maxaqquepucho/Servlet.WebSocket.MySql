@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -34,18 +36,22 @@
                             </tr>
                         </thead>
                         <tbody id="personas">
-                            <tr>
-                                <td scope="row">1</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>
-                                    <a href="#" class="btn btn-primary  eliminar" >Eliminar</a>
-                                </td>
-                                <td>
-                                    <a href="#" class="btn btn-warning">Editar</a>
-                                </td>
-                            </tr>
+
+                            <c:forEach var="n" items="${lista}" >     
+                                <%-- begin="0" end="5" --%>
+                                <tr>
+                                    <td scope="row"><c:out value = "${n.codigo}"/></td>
+                                    <td>${n.nombre}</td>
+                                    <td>${n.apellido}</td>
+                                    <td>${n.dni}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary  eliminar" >Eliminar</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-warning">Editar</a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                         </tbody>
                     </table>
                 </div>
@@ -85,6 +91,6 @@
         <script src="js/jquery-3.3.1.min.js"> </script>
         <!-- <script src="js/popper.min.js" ></script> -->
         <script src="js/bootstrap.min.js" ></script>
-        <script src="js/CRUD.js"></script>
+        <%-- <script src="js/CRUD.js"></script> --%>
 	</body>
 </html>

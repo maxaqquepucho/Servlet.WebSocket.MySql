@@ -4,50 +4,73 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.colegio.interfaces.PersonaInterface;
 import com.colegio.modelo.Persona;
 
+
+
 import com.colegio.jdbc.*;
 
 public class PersonaSQL implements PersonaInterface{
-
+	
+	protected ArrayList lista = new ArrayList();
 	private final  ConectarMysql mysql;
 	public PersonaSQL() {
 		this.mysql = new ConectarMysql();
 	}
+	public void setElemento(Persona elemento) 
+	{
+		try 
+		{lista.set(lista.size(), elemento);} 
+		catch (Exception e) 
+		{lista.add(elemento);}
+	}
 	
 	String SQL = "";
 	@Override
-	public List<Persona> mostrar() {
-		List<Persona> lista = new LinkedList<Persona>();
-		Persona personas = new Persona();
-		SQL = "select * from personas";
-		Connection conectado = mysql.getConnection();
+	public ArrayList<Persona> mostrar() {
+		ArrayList<Persona> lista = new ArrayList<Persona>();
+		//Persona persona = new Persona();
+		SQL = "select * from persona";
 		mysql.establecerConexion();
+		Connection conectado = mysql.getConnection();
+		
+		
 		
 		try {
-			Statement st = conectado.createStatement();
-			ResultSet rs = st.executeQuery(SQL);
+			PreparedStatement ps = conectado.prepareStatement(SQL);
+			ResultSet rs = ps.executeQuery();
+			
 			
 			while (rs.next()) {
-				personas.setCodigo(rs.getString("codigo"));
-				personas.setNombre(rs.getString("nombre"));
-				personas.setApellido(rs.getString("apellido"));
-				personas.setDni(rs.getString("dni"));
-				
-				
-				lista.add(personas);
+				Persona persona = new Persona();
+				persona.setCodigo(rs.getString("codigo"));
+				persona.setNombre(rs.getString("nombre"));
+				persona.setApellido(rs.getString("apellido"));
+				persona.setDni(rs.getString("dni"));
+				//setElemento(persona);
+				//lista.set(lista.size()+1, persona);
+				lista.add(persona);
 			}
-			
+				
+				//Para comprobar que esta trayendo los datos de la base de datos
+				//System.out.println(personas.toString());
+				//System.out.println(rs.getString("codigo"));
+				//System.out.println(rs.getString("nombre"));
+				//Integer.parseInt(personas.getCodigo());
+				
+			System.out.println("AQUI : "+lista.toString());
+			return lista;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			mysql.cerrarConexion();
+			//mysql.cerrarConexion();
 		}
-		return lista;
+		return null;
 	}
 
 	@Override
