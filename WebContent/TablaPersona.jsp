@@ -37,7 +37,7 @@
                         </thead>
                         <tbody id="personas">
 
-                            <c:forEach var="n" items="${lista}" >     
+                            <c:forEach var="n" items="${lista}" >
                                 <%-- begin="0" end="5" --%>
                                 <tr>
                                     <td scope="row"><c:out value = "${n.codigo}"/></td>
@@ -85,6 +85,9 @@
             </div>
 
             <div class="row d-flex justify-content-center">
+                <div class="col-6">
+                    <a href="ServletCerrarSesion" class="btn btn-dark">Cessar Session</a>
+                </div>
             </div>
         </div>
 

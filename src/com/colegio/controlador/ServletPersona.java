@@ -10,12 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.colegio.tools.ConvertirNumero;
 import com.colegio.interfaces.PersonaInterface;
 import com.colegio.modelo.Login;
 import com.colegio.modelo.Persona;
-import com.colegio.mysql.PersonaSQL;;
+import com.colegio.mysql.PersonaSQL;
 
 /**
  * Servlet implementation class ServletPersona
@@ -57,7 +55,8 @@ public class ServletPersona extends HttpServlet {
 			despachador.forward(request, response);
  			System.out.println("Llegaste con exito al ServletPersona");
 		}else {
-			response.sendRedirect("index.jsp");
+			RequestDispatcher despachador = request.getRequestDispatcher("error.jsp");
+			despachador.forward(request, response);
 		}
 		
 		
