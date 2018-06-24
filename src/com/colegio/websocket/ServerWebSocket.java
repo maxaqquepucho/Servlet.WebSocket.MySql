@@ -40,6 +40,7 @@ public class ServerWebSocket {
 			System.out.println("esta aqui");
 		}
 	}
+	
 	@OnClose
 	public void handleClose(Session userSession) {
 		chatroonUsers.remove(userSession);
