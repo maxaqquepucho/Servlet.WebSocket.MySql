@@ -14,7 +14,7 @@ import com.mysql.jdbc.*;
 
 
 public class LoginSQL implements LoginInterface{
-	
+
 	private final  ConectarMysql mysql;
 	public LoginSQL() {
 		this.mysql = new ConectarMysql();
@@ -22,11 +22,11 @@ public class LoginSQL implements LoginInterface{
 
 	@Override
 	public boolean iniciarSesion(Login persona) {
-		String SQL = "select A.codigo, B.usuario , B.pass" + 
-				"     from persona as A inner join login as B on " + 
+		String SQL = "select A.codigo, B.usuario , B.pass" +
+				"     from persona as A inner join login as B on " +
 				"     (A.codigo = B.usuario) " +
 				"     where B.usuario =? AND B.pass =?; ";
-		
+
 		mysql.establecerConexion();
 		Connection conectado = mysql.getConnection();
 		String pass = "";
@@ -34,9 +34,9 @@ public class LoginSQL implements LoginInterface{
 			PreparedStatement pst = conectado.prepareStatement(SQL);
 			pst.setString(1, persona.getCodigo());
 			pst.setString(2, persona.getPass());
-			
+
 			ResultSet rs = pst.executeQuery();
-			
+
 			if (rs.next()) {
 				pass = rs.getString("pass");
 			}
@@ -46,14 +46,14 @@ public class LoginSQL implements LoginInterface{
 			} else {
 				return false;
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 	}
 
-	
-	
+
+
 }

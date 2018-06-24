@@ -95,5 +95,26 @@
         <!-- <script src="js/popper.min.js" ></script> -->
         <script src="js/bootstrap.min.js" ></script>
         <%-- <script src="js/CRUD.js"></script> --%>
+
+        <script type="text/javascript">
+            const ws - new WebSocket('ws://localhost:8080/Servlet.WebSocket.MySql/ServletWebSocket');
+
+            ws.onopen = () => {
+                console.log('Conectado');
+            };
+
+            ws.onmessage = e =>{
+                const msg = JSON.parse(e.data);
+            };
+
+            ws.onerror = e => {
+                console.log(e);
+            };
+
+            ws.onclose = e =>{
+                console.log('Coneccion cerrada');
+                console.log(e);
+            }
+        </script>
 	</body>
 </html>
