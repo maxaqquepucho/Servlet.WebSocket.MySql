@@ -22,9 +22,9 @@
 	</head>
 	<body>
         <div class="container-fluid">
-            <div class="row m-2 d-flex justify-content-center">
-                <div class="col-8 ">
-                    <table class="table table-hover table-dark" >
+            <div class="row m-2 d-flex justify-content-center ">
+                <div class="col-8">
+                    <table class="table table-hover table-dark table-responsive" >
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -45,7 +45,7 @@
                                     <td>${n.apellido}</td>
                                     <td>${n.dni}</td>
                                     <td>
-                                        <a href="#" class="btn btn-primary  eliminar" >Eliminar</a>
+                                        <a href="#" class="btn btn-primary  eliminar" onclick="eliminarFila(this)">Eliminar</a>
                                     </td>
                                     <td>
                                         <a href="#" class="btn btn-warning">Editar</a>

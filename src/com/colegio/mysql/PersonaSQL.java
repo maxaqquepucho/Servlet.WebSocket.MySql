@@ -3,11 +3,7 @@ package com.colegio.mysql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.colegio.interfaces.PersonaInterface;
 import com.colegio.modelo.Persona;
 
@@ -74,18 +70,19 @@ public class PersonaSQL implements PersonaInterface{
 	}
 
 	@Override
-	public boolean agregar(Persona personas) {
+	public boolean agregar(Persona persona) {
 
-		SQL = "INSERT INTO personas (nombre, apellido, dni) " + 
-				"            VALUES ( ?, ?, ?);";
-		Connection conectado = mysql.getConnection();
+		SQL = "INSERT INTO persona (codigo, nombre, apellido, dni) " + 
+				"            VALUES ( ?, ?, ?, ?);";
 		mysql.establecerConexion();
+		Connection conectado = mysql.getConnection();
 		
 		try {
 			PreparedStatement pst = conectado.prepareStatement(SQL);
-			pst.setString(1, personas.getNombre());
-			pst.setString(2, personas.getApellido());
-			pst.setString(3, personas.getDni());
+			pst.setString(1, persona.getCodigo());
+			pst.setString(2, persona.getNombre());
+			pst.setString(3, persona.getApellido());
+			pst.setString(4, persona.getDni());
 			
 			
 			int n = pst.executeUpdate();
@@ -164,9 +161,9 @@ public class PersonaSQL implements PersonaInterface{
 
 	@Override
 	public boolean eliminar(String codigo) {
-		SQL = "DELETE FROM personas WHERE codigo = ?";
-		Connection conectado = mysql.getConnection();
+		SQL = "DELETE FROM persona WHERE codigo = ?";
 		mysql.establecerConexion();
+		Connection conectado = mysql.getConnection();
 		
 		try {
 			PreparedStatement  pst = conectado.prepareStatement(SQL);
