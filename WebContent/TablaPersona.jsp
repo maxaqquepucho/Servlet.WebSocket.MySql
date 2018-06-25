@@ -72,11 +72,11 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">DNI</label>
-                            <input id="celular" name="dni" value="164546" type="text" class="form-control" placeholder="Numero de Celular">
+                            <input id="dni" name="dni" value="164546" type="text" class="form-control" placeholder="Numero de Celular">
                         </div>
 
                         <div class="d-flex justify-content-around mb-2">
-                            <input id="agregar" name="agregar" type="button"  class="btn btn-primary" value="Agregar">
+                            <input id="btnAgregar" name="btnAgregar" type="button"  class="btn btn-primary" value="Agregar">
                             <button  type="reset" name="cancelar" class="btn btn-primary">Cancelar</button>
                         </div>
 
@@ -88,33 +88,16 @@
                 <div class="col-6">
                     <a href="ServletCerrarSesion" class="btn btn-dark">Cessar Session</a>
                 </div>
+                <div class="col-4">
+                    <input id="nombreUsuario" type="text" name="nombreUsuario"   class="form-control" value="Max" >
+                </div>
             </div>
         </div>
 
         <script src="js/jquery-3.3.1.min.js"> </script>
         <!-- <script src="js/popper.min.js" ></script> -->
         <script src="js/bootstrap.min.js" ></script>
-        <%-- <script src="js/CRUD.js"></script> --%>
+         <script src="js/CrudTabla.js"></script>
 
-        <script type="text/javascript">
-            const ws - new WebSocket('ws://localhost:8080/Servlet.WebSocket.MySql/ServletWebSocket');
-
-            ws.onopen = () => {
-                console.log('Conectado');
-            };
-
-            ws.onmessage = e =>{
-                const msg = JSON.parse(e.data);
-            };
-
-            ws.onerror = e => {
-                console.log(e);
-            };
-
-            ws.onclose = e =>{
-                console.log('Coneccion cerrada');
-                console.log(e);
-            }
-        </script>
 	</body>
 </html>

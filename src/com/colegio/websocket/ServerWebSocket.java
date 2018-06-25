@@ -1,77 +1,80 @@
 package com.colegio.websocket;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.ArrayList;
 
+import java.util.List;
+
+import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 
 import org.json.JSONObject;
 
+import com.colegio.modelo.Persona;
+
+@ServerEndpoint(value = "/ServerWebSocket",  decoders = {DecoderMensaje.class}, encoders = {EncoderMensaje.class})
 public class ServerWebSocket {
 	
-	Set<Session> chatroonUsers = Collections.synchronizedSet(new HashSet<Session>());
+	private static final List<Session> conectados = new ArrayList<>();
+	
 	@OnOpen
-	public void handleOpen(Session userSession) {
-		System.out.println(chatroonUsers);
-		chatroonUsers.add(userSession);
-		System.out.println(userSession);
-		
+	public void inicio(Session session) {
+		conectados.add(session);
+		System.out.println("Esta conectado...");
 	}
+	
+	/*@OnMessage
+	public void mensaje(String message, Session userSession ) throws IOException {
+		String userName = (String ) userSession.getUserProperties().get("nombreUsuario");
+		//userSession.getUserProperties().put("nombreUsuario", userName);
+		for(Session session : conectados) {
+			session.getBasicRemote().sendText(crearObjetoJson(userName, message));
+		}
+	}*/
+	
 	@OnMessage
-	public void handleMessage(String message ,Session userSession) throws IOException {
-		String userName= (String) userSession.getUserProperties().get("username");
-		if(userName == null) {
-			userSession.getUserProperties().put("username", message);
-			userSession.getBasicRemote().sendText(buildJsonData("System", "Estas Conectado ahora como "+ message));
-		}else {
-			Iterator<Session> iterador = chatroonUsers.iterator();
-			while(iterador.hasNext()) {
-				System.out.println(iterador);
-				System.out.println(chatroonUsers);
-				iterador.next().getBasicRemote().sendText(buildJsonData(userName, message));
+	public void mensaje(String message, Persona persona)throws IOException {
+		System.out.println(persona.getCodigo());
+		System.out.println(persona.getNombre());
+		System.out.println(persona.getApellido());
+		System.out.println(persona.getDni());
+		for(Session session :  conectados) {
+			try {
+				session.getBasicRemote().sendObject(message);
+			} catch (EncodeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			System.out.println("esta aqui");
 		}
 	}
 	
 	@OnClose
-	public void handleClose(Session userSession) {
-		chatroonUsers.remove(userSession);
-		
-	}	
-	private String buildJsonData(String userName, String message) {
-		
-		/*JsonObject jsonObject = Json.createObjectBuilder().add("message", userName + ": "+message).build();
-		StringWriter stringWriter = new StringWriter();
-		try(JsonWriter jsonWriter = Json.createWriter(stringWriter)){
-			jsonWriter.writer(jsonObject);
-		}
-		return stringWriter.toString();*/
-		
+	public void Salir(Session session) {
+		conectados.remove(session);
+		System.out.println("se desconecto la session : "+session);
+	}
+	
+	
+	/*private String crearObjetoJson(String userName, String mensaje) {
 		JSONObject json = new JSONObject();
 		try {
-			json.put("message", message);
-			System.out.println(json.put("message",message).toString());
+			json.put("accion", mensaje);
+			json.put("accion2", mensaje+"2");
+			System.out.println(json.toString());
 			return json.toString();
-			
-			
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			return null;
 		}
-	}
+	}*/
 	
 	@OnError
 	public void handleError(Throwable t) {
 		t.printStackTrace();
 	}
-
 }
