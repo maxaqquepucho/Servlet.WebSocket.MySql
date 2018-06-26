@@ -48,7 +48,7 @@
                                         <a href="#" class="btn btn-primary  eliminar" onclick="eliminarFila(this)">Eliminar</a>
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-warning">Editar</a>
+                                        <a href="#" class="btn btn-warning" onclick="editarFila(this)">Editar</a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -58,8 +58,16 @@
                 <div class="col-4 border border p-2">
                     <form id="formPersona">
                         <div class="form-group" >
-                            <label for="">Codigo</label>
-                            <input id="codigo" name="codigo"  type="text" class="form-control"   placeholder="Codigo">
+                            <div class="row">
+                                <div class="col-7">
+                                    <label for="">Codigo</label>
+                                    <input id="codigo" name="codigo"  type="text" class="form-control"   placeholder="Codigo">
+                                </div>
+                                <div class="col-4">
+                                    <label for="">Idice Fila</label>
+                                    <input id="indiceFila" name="indice"  type="text" class="form-control"   placeholder="Indice">
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nombres</label>

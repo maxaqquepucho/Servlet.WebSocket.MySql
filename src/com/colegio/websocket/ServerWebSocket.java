@@ -82,8 +82,31 @@ public class ServerWebSocket {
 					System.out.println("arror al Eliminar");
 					 userSession.getBasicRemote().sendText("{\"accion\":\"alertaEliminar\"}");
 				}
+			break;
+		case "Editar":
+				codigo = gson.get("codigo").getAsString();
+				nombre = gson.get("nombre").getAsString();
+				apellido = gson.get("apellido").getAsString();
+				dni = gson.get("dni").getAsString();
 			
+				persona = new Persona();
+				persona.setCodigo(codigo);
+				persona.setNombre(nombre);
+				persona.setApellido(apellido);
+				persona.setDni(dni);
+				if (personaSQL.actulizar(persona)) {
+					System.out.println("Se edito un usuario satisfactoriamente: "+codigo);
+					for(Session session : conectados) {
+						session.getBasicRemote().sendText(message);
+					}
+				} else {
+					System.out.println("arror al Eliminar");
+					 userSession.getBasicRemote().sendText("{\"accion\":\"alertaEditar\"}");
+				}
+				
+			break;
 		default:
+			System.out.println("NO EXISTE ESTA ACCION EN EL OBJETO RECIBIDO POR EL CLIENTE");
 			break;
 		}
 		

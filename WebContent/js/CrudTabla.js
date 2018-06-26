@@ -8,7 +8,10 @@
     let codigo = document.getElementById('codigo'),
         nombre = document.getElementById('nombre'),
         apellido = document.getElementById('apellido'),
-        dni = document.getElementById('dni');
+        dni = document.getElementById('dni'),
+        indiceRow = document.getElementById('indiceFila');
+
+    document.getElementById("indiceFila").disabled = true;
 
     ws.onopen = onOpen;
     ws.onclose = onClose;
@@ -33,7 +36,10 @@
             case "Eliminar":
                 mensajeEliminarFila(obj);
                 break;
-            default: console.log("No se pudo agregar");
+            case "Editar":
+                mensajeEditarFila(obj);
+                break;
+            default: console.log("No se pudo realizar esta accion");
 
         }
         console.log(obj);
@@ -44,18 +50,19 @@
     }
 /*===================================================*/
 
-btnAgregar.addEventListener('click', agregarFila);
+btnAgregar.addEventListener('click', agregarEditarFila);
 
-    function agregarFila(){
-        var datos = {
-            accion: btnAgregar.value,
-            codigo: codigo.value,
-            nombre: nombre.value,
-            apellido: apellido.value,
-            dni: dni.value
-        };
+    function agregarEditarFila(){
+            var datos = {
+                accion: btnAgregar.value,
+                codigo: codigo.value,
+                nombre: nombre.value,
+                apellido: apellido.value,
+                dni: dni.value,
+                indiceRow: indiceRow.value
+            };
+            ws.send(JSON.stringify(datos)+'');
 
-        ws.send(JSON.stringify(datos)+'');
         //console.log(datos);
     }
 
@@ -76,14 +83,29 @@ btnAgregar.addEventListener('click', agregarFila);
             cell3.innerHTML = objeto.apellido;
             cell4.innerHTML = objeto.dni;
             cell5.innerHTML = `<a href="#" class="btn btn-primary eliminar" onclick="eliminarFila(this)" >Eliminar</a>`;
-            cell6.innerHTML =`<a href="#" class="btn btn-warning" onclick="editarFila()">Editar</a>`;
+            cell6.innerHTML =`<a href="#" class="btn btn-warning" onclick="editarFila(this)">Editar</a>`;
             console.log('Fila '+numFilas());
+            limpiarCampos();
     }
 
     function mensajeEliminarFila(objeto) {
         let tablaPersona = document.querySelector('#personas');
         tablaPersona.children[objeto.indiceFila].remove();
         console.log('Se elimino la fila: '+objeto.indiceFila);
+    }
+
+    function mensajeEditarFila(objeto){
+        let tablaPersona = document.querySelector('#personas');
+        let fila = tablaPersona.children[objeto.indiceRow];
+        let celda = fila.getElementsByTagName('td');
+
+        celda[0].innerHTML = objeto.codigo;
+        celda[1].innerHTML = objeto.nombre;
+        celda[2].innerHTML = objeto.apellido;
+        celda[3].innerHTML = objeto.dni;
+
+        btnAgregar.value = 'Agregar';
+        limpiarCampos();
     }
 
     function eliminarFila(t){
@@ -100,10 +122,29 @@ btnAgregar.addEventListener('click', agregarFila);
         ws.send(JSON.stringify(datos)+'');
     }
 
+    function editarFila(t){
+        let td = t.parentNode;
+        let fila = td.parentNode;
+
+        codigo.value = fila.children[0].textContent;
+        indiceRow.value = fila.sectionRowIndex;
+        nombre.value = fila.children[1].textContent;
+        apellido.value = fila.children[2].textContent;
+        dni.value = fila.children[3].textContent;
+        btnAgregar.value = 'Editar';
+    }
 
 
     let tabla = document.querySelector('#personas');
     function numFilas() {
         return  tabla.rows.length;
+    }
+
+    function limpiarCampos() {
+        indiceRow.value = '';
+        codigo.value = '';
+        nombre.value = '';
+        apellido.value = '';
+        dni.value = '';
     }
 // })(window, document, JSON);

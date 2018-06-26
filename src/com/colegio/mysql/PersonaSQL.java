@@ -131,19 +131,18 @@ public class PersonaSQL implements PersonaInterface{
 
 	@Override
 	public boolean actulizar(Persona personas) {
-		SQL = "UPDATE personas SET nombre = ?, apellido = ?, correo = ?, celular = ?, " + 
-		"                     tipoUsusario = ?, sexo = ?, contrasenia = ? " + 
+		SQL = "UPDATE persona SET nombre = ?, apellido = ?, dni = ? " + 
 		"                     WHERE codigo = ?";
-		Connection conectado = mysql.getConnection();
 		mysql.establecerConexion();
+		Connection conectado = mysql.getConnection();
 		
 		try {
 			PreparedStatement pst = conectado.prepareStatement(SQL);
 			
-			pst.setString(1, personas.getCodigo());
-			pst.setString(2, personas.getNombre());
-			pst.setString(3, personas.getApellido());
-			pst.setString(4, personas.getDni());
+			pst.setString(1, personas.getNombre());
+			pst.setString(2, personas.getApellido());
+			pst.setString(3, personas.getDni());
+			pst.setString(4, personas.getCodigo());
 			
 			
 			int n = pst.executeUpdate();
